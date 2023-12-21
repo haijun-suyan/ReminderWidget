@@ -100,8 +100,8 @@
 			children = (
 				F3ABD0EF2B32E6990029EC0B /* ReminderWidgetApp.swift */,
 				F3ABD0F12B32E6990029EC0B /* ContentView.swift */,
-				F3ABD0F32B32E69B0029EC0B /* Assets.xcassets */,
 				F3ABD0F82B32E69B0029EC0B /* Persistence.swift */,
+				F3ABD0F32B32E69B0029EC0B /* Assets.xcassets */,
 				F3ABD0FA2B32E69B0029EC0B /* ReminderWidget.xcdatamodeld */,
 				F3ABD0F52B32E69B0029EC0B /* Preview Content */,
 			);
