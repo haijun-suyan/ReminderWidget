@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CoreData
-
+//根级渲染皿((内容)视觉入口)
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
