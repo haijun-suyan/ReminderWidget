@@ -6,7 +6,7 @@
 //
 
 import CoreData
-
+//持久化控制器
 struct PersistenceController {
     static let shared = PersistenceController()
 
