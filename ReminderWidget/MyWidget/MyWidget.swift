@@ -1,4 +1,4 @@
-//
+//  参考文档https://zhuanlan.zhihu.com/p/661980240
 //  MyWidget.swift
 //  MyWidget
 //
