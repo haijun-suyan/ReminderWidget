@@ -9,6 +9,7 @@ import WidgetKit
 import SwiftUI
 import Intents
 
+//Provider为小组件提供渲染数据
 struct Provider: IntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(), configuration: ConfigurationIntent())
@@ -35,11 +36,14 @@ struct Provider: IntentTimelineProvider {
     }
 }
 
+//小组件的数据模型
+//SimpleEntry简单分录
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationIntent
 }
 
+//小组件的视图
 struct MyWidgetEntryView : View {
     var entry: Provider.Entry
 
@@ -49,6 +53,7 @@ struct MyWidgetEntryView : View {
 }
 
 @main
+//小组件的配置部分
 struct MyWidget: Widget {
     let kind: String = "MyWidget"
 
@@ -61,6 +66,7 @@ struct MyWidget: Widget {
     }
 }
 
+// 提供小组件在 Xcode 中的预览
 struct MyWidget_Previews: PreviewProvider {
     static var previews: some View {
         MyWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
