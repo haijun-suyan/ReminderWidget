@@ -38,12 +38,15 @@ struct Provider: IntentTimelineProvider {
     }
 
     //配置啥时间显示啥内容(配置(大量)时间条目(刷新时间点))
-    //组件刷新频率(非固定)：
+    //组件刷新频率(非固定)：1.
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
         //新建涵盖5个目录(按小时分割)的时间线且从当前日期开始更新
         let currentDate = Date()
         //定义了从现在起未来5个小时内的5个时间条目
+        //时间条目的间隔过短导致加重系统的负担
+        //24小时周期内刷新频率因素：1.用户查看组件的频率 2.组件上次重新载入时间点 3.组件所属App 是否处于活跃状态
+        //用户频繁查看的组件，底层系统刷新上限阈值为40-70次/24h(换算约莫40分钟间隔)
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
             let entry = SimpleEntry(date: entryDate, configuration: configuration, obj1: Model(title: "yanhaijun"))
