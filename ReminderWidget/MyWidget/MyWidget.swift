@@ -14,7 +14,8 @@ import Intents
 struct Provider: IntentTimelineProvider {
     //配置占位:小组件的首次显示(尚未准备好渲染数据)
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationIntent(), obj1: Model(title: "yanhaijun"))
+        SimpleEntry(date: Date(), configuration: ConfigurationIntent())
+//        SimpleEntry(date: Date(), configuration: ConfigurationIntent(), obj1: Model(title: "yanhaijun"))
     }
 
     //配置Widget组件的简介(如在组件库中预览时会触发)
@@ -24,13 +25,13 @@ struct Provider: IntentTimelineProvider {
         //异步返回一个与小组件渲染有关的时间线条目
         if context.isPreview {//search预览
             //保底数据
-            let entry = SimpleEntry(date: Date(), configuration: configuration, obj1: Model(title: "yanhaijun保底数据"))
+            let entry = SimpleEntry(date: Date(), configuration: configuration)
             completion(entry)
             //目标数据(耗时超几秒)
 
         } else {
             //目标数据
-            let entry = SimpleEntry(date: Date(), configuration: configuration, obj1: Model(title: "yanhaijun目标数据"))
+            let entry = SimpleEntry(date: Date(), configuration: configuration)
             completion(entry)
 
         }
@@ -49,7 +50,7 @@ struct Provider: IntentTimelineProvider {
         //用户频繁查看的组件，底层系统刷新上限阈值为40-70次/24h(换算约莫40分钟间隔)
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration, obj1: Model(title: "yanhaijun"))
+            let entry = SimpleEntry(date: entryDate, configuration: configuration)
             entries.append(entry)
         }
 
@@ -70,7 +71,7 @@ struct SimpleEntry: TimelineEntry {
     let configuration: ConfigurationIntent
 
     //(自定义)补充属性(内容)
-    let obj1: Model?
+//    let obj1: Model?
 }
 
 struct Model {
@@ -84,8 +85,8 @@ struct MyWidgetEntryView : View {
     //渲染体body(内嵌具体视觉渲染)
     var body: some View {
         Text(entry.date, style: .time)
-        Text(entry.obj1!.title)
-        Text("具体视觉渲染")
+//        Text(entry.obj1!.title)
+//        Text("具体视觉渲染")
     }
 }
 
@@ -107,7 +108,7 @@ struct MyWidget: Widget {
 // 提供小组件的预览
 struct MyWidget_Previews: PreviewProvider {
     static var previews: some View {
-        MyWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent(), obj1: Model(title: "yanhaijun")))
+        MyWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
