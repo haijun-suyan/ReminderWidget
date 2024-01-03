@@ -14,7 +14,7 @@ import Intents
 struct Provider: IntentTimelineProvider {
     //配置占位:小组件的首次显示(尚未准备好渲染数据)
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationIntent())
+        SimpleEntry(date: Date(), configuration: ConfigurationIntent(), time: .morning)
 //        SimpleEntry(date: Date(), configuration: ConfigurationIntent(), obj1: Model(title: "yanhaijun"))
     }
 
@@ -25,13 +25,13 @@ struct Provider: IntentTimelineProvider {
         //异步返回一个与小组件渲染有关的时间线条目
         if context.isPreview {//search预览
             //保底数据
-            let entry = SimpleEntry(date: Date(), configuration: configuration)
+            let entry = SimpleEntry(date: Date(), configuration: configuration, time: .morning)
             completion(entry)
             //目标数据(耗时超几秒)
 
         } else {
             //目标数据
-            let entry = SimpleEntry(date: Date(), configuration: configuration)
+            let entry = SimpleEntry(date: Date(), configuration: configuration, time: .morning)
             completion(entry)
 
         }
@@ -50,7 +50,7 @@ struct Provider: IntentTimelineProvider {
         //用户频繁查看的组件，底层系统刷新上限阈值为40-70次/24h(换算约莫40分钟间隔)
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
+            let entry = SimpleEntry(date: entryDate, configuration: configuration, time: .morning)
             entries.append(entry)
         }
 
@@ -59,6 +59,15 @@ struct Provider: IntentTimelineProvider {
         //never：永远不会向组件请求新的时间线
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
+    }
+
+    func getDate(in hour: Int) -> Date {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year,.month,.day], from: Date())
+        components.hour = hour
+        components.minute = 0
+        components.second = 0
+        return calendar.date(from: components)!
     }
 }
 
@@ -70,8 +79,13 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationIntent
 
+    enum Time {
+    case morning,afternoon,night
+    }
     //(自定义)补充属性(内容)
 //    let obj1: Model?
+    //表示上午、下午、晚上
+    let time: Time
 }
 
 struct Model {
@@ -108,7 +122,7 @@ struct MyWidget: Widget {
 // 提供小组件的预览
 struct MyWidget_Previews: PreviewProvider {
     static var previews: some View {
-        MyWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
+        MyWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent(), time: .morning))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
