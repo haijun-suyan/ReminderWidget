@@ -38,6 +38,7 @@ struct Provider: IntentTimelineProvider {
     }
 
     //配置啥时间显示啥内容(配置(大量)时间条目(刷新时间点))
+    //组件刷新频率(非固定)：
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
         //新建涵盖5个目录(按小时分割)的时间线且从当前日期开始更新
@@ -51,7 +52,7 @@ struct Provider: IntentTimelineProvider {
 
         //atEnd：在时间线中的最后时间条目生效后，底层系统再次重新获取新时间线(默认策略)
         //after(Date)：可指定在未来的某个时间点后，底层系统再次重新获取新时间线
-        //never：永远不会向小组件请求新的时间线
+        //never：永远不会向组件请求新的时间线
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
