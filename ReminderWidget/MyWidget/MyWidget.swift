@@ -10,41 +10,61 @@ import SwiftUI
 import Intents
 
 //(供应方)Provider为小组件提供渲染数据
+//配置placeholder > 配置getSnapshot > 配置getTimeline 业务层(我)负责配置准备,底层系统在合适的时机会自动进行API触发调用
 struct Provider: IntentTimelineProvider {
-    //占位:小组件的首次显示(尚未准备好渲染数据)
+    //配置占位:小组件的首次显示(尚未准备好渲染数据)
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(), configuration: ConfigurationIntent(), obj1: Model(title: "yanhaijun"))
     }
 
-    //获取Widget组件的简介(如在组件库中预览时会触发)
+    //配置Widget组件的简介(如在组件库中预览时会触发)
+    //
     func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        //(入口)简录
-        let entry = SimpleEntry(date: Date(), configuration: configuration, obj1: Model(title: "yanhaijun"))
-        completion(entry)
+        //(入口)简录/条目
+        //异步返回一个与小组件渲染有关的时间线条目
+        if context.isPreview {//search预览
+            //保底数据
+            let entry = SimpleEntry(date: Date(), configuration: configuration, obj1: Model(title: "yanhaijun保底数据"))
+            completion(entry)
+            //目标数据(耗时超几秒)
+
+        } else {
+            //目标数据
+            let entry = SimpleEntry(date: Date(), configuration: configuration, obj1: Model(title: "yanhaijun目标数据"))
+            completion(entry)
+
+        }
+
     }
 
-    //这个方法来获取当前时间和（可选）未来时间的时间线的小组件数据以更新小部件。也就是说你在这个方法中设置在什么时间显示什么内容。
+    //配置啥时间显示啥内容(配置(大量)时间条目(刷新时间点))
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
         //新建涵盖5个目录(按小时分割)的时间线且从当前日期开始更新
         let currentDate = Date()
+        //定义了从现在起未来5个小时内的5个时间条目
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
             let entry = SimpleEntry(date: entryDate, configuration: configuration, obj1: Model(title: "yanhaijun"))
             entries.append(entry)
         }
 
+        //atEnd：在时间线中的最后时间条目生效后，底层系统再次重新获取新时间线(默认策略)
+        //after(Date)：可指定在未来的某个时间点后，底层系统再次重新获取新时间线
+        //never：永远不会向小组件请求新的时间线
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
 }
 
+//TimelineEntry小组件的刷新机制：时间线条目
 //小组件的数据模型
 //SimpleEntry简单分录
 struct SimpleEntry: TimelineEntry {
+    //时间点
     let date: Date
     let configuration: ConfigurationIntent
-    //(自定义)补充属性
+    //(自定义)补充属性(内容)
     let obj1: Model
 }
 
