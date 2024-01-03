@@ -68,8 +68,9 @@ struct SimpleEntry: TimelineEntry {
     //时间点
     let date: Date
     let configuration: ConfigurationIntent
+
     //(自定义)补充属性(内容)
-    let obj1: Model
+    let obj1: Model?
 }
 
 struct Model {
@@ -83,7 +84,7 @@ struct MyWidgetEntryView : View {
     //渲染体body(内嵌具体视觉渲染)
     var body: some View {
         Text(entry.date, style: .time)
-        Text(entry.obj1.title)
+        Text(entry.obj1!.title)
         Text("具体视觉渲染")
     }
 }
