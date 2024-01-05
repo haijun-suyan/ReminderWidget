@@ -40,23 +40,42 @@ struct Provider: IntentTimelineProvider {
 
     //配置啥时间显示啥内容(配置(大量)时间条目(刷新时间点))
     //组件刷新频率(非固定)：1.
+//    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+//        var entries: [SimpleEntry] = []
+//        //新建涵盖5个目录(按小时分割)的时间线且从当前日期开始更新
+//        let currentDate = Date()
+//        //定义了从现在起未来5个小时内的5个时间条目
+//        //时间条目的间隔过短导致加重系统的负担
+//        //24小时周期内刷新频率因素：1.用户查看组件的频率 2.组件上次重新载入时间点 3.组件所属App 是否处于活跃状态
+//        //用户频繁查看的组件，底层系统刷新上限阈值为40-70次/24h(换算约莫40分钟间隔)
+//        for hourOffset in 0 ..< 5 {
+//            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+//            let entry = SimpleEntry(date: entryDate, configuration: configuration, time: .morning)
+//            entries.append(entry)
+//        }
+//
+//        //atEnd：在时间线中的最后时间条目生效后，底层系统再次重新获取新时间线(默认策略)
+//        //after(Date)：可指定在未来的某个时间点后，底层系统再次重新获取新时间线
+//        //never：永远不会向组件请求新的时间线
+//        let timeline = Timeline(entries: entries, policy: .atEnd)
+//        completion(timeline)
+//    }
+
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
-        //新建涵盖5个目录(按小时分割)的时间线且从当前日期开始更新
-        let currentDate = Date()
-        //定义了从现在起未来5个小时内的5个时间条目
-        //时间条目的间隔过短导致加重系统的负担
-        //24小时周期内刷新频率因素：1.用户查看组件的频率 2.组件上次重新载入时间点 3.组件所属App 是否处于活跃状态
-        //用户频繁查看的组件，底层系统刷新上限阈值为40-70次/24h(换算约莫40分钟间隔)
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration, time: .morning)
-            entries.append(entry)
+        let hour = Calendar.current.component(.hour, from: Date())
+        switch hour {
+        case 8..<12:
+            entries.append(SimpleEntry(date: Date(), configuration: configuration, time: .morning))
+            entries.append(SimpleEntry(date: getDate(in: 12), configuration: configuration, time: .afternoon))
+            entries.append(SimpleEntry(date: getDate(in: 18), configuration: configuration, time: .night))
+        case 12..<18:
+            entries.append(SimpleEntry(date: Date(), configuration: configuration, time: .afternoon))
+            entries.append(SimpleEntry(date: getDate(in: 18), configuration: configuration, time: .night))
+        default:
+            entries.append(SimpleEntry(date: Date(), configuration: configuration, time: .night))
         }
 
-        //atEnd：在时间线中的最后时间条目生效后，底层系统再次重新获取新时间线(默认策略)
-        //after(Date)：可指定在未来的某个时间点后，底层系统再次重新获取新时间线
-        //never：永远不会向组件请求新的时间线
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
@@ -92,16 +111,56 @@ struct Model {
     let title: String
 }
 
+extension SimpleEntry.Time {
+    var text: String {
+        switch self {
+        case .morning:
+            return "上午"
+        case .afternoon:
+            return "下午"
+        case .night:
+            return "晚上"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .morning:
+            return "sunrise"
+        case .afternoon:
+            return "sun.max.fill"
+        case .night:
+            return "sunset"
+        }
+    }
+}
+
 //小组件的入口视图(Search页面内Widget入口渲染)
+//UI更新:时刻条目entry对应的UI绘制
+//层(器皿)渲染区
+//UI对应的条目entry绘制
 struct MyWidgetEntryView : View {
     var entry: Provider.Entry
 
     //渲染体body(内嵌具体视觉渲染)
+//    var body: some View {
+//        Text(entry.date, style: .time)
+////        Text(entry.obj1!.title)
+////        Text("具体视觉渲染")
+//    }
     var body: some View {
-        Text(entry.date, style: .time)
-//        Text(entry.obj1!.title)
-//        Text("具体视觉渲染")
-    }
+            VStack(spacing: 10) {
+                Image(systemName: entry.time.icon)
+                    .imageScale(.large)
+                    .foregroundColor(.red)
+                    .font(Font.largeTitle.weight(.medium))
+                HStack {
+                    Text("现在是:")
+                    Text(entry.time.text)
+                }
+                .font(.subheadline)
+            }
+        }
 }
 
 @main
