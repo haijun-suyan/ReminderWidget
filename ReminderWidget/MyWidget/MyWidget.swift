@@ -1,7 +1,8 @@
 //  参考文档https://zhuanlan.zhihu.com/p/661980240
 //  MyWidget.swift
 //  MyWidget
-//
+//  Image(systemName:)获取系统的图标(资源)
+//  Image()获取自定义的图标(资源)
 //  Created by haijunyan on 2023/12/28.
 //
 
@@ -150,6 +151,7 @@ struct MyWidgetEntryView : View {
 //    }
     var body: some View {
             VStack(spacing: 10) {
+                Image("custom_fish").imageScale(.small)
                 Image(systemName: entry.time.icon)
                     .imageScale(.large)
                     .foregroundColor(.red)
