@@ -4,7 +4,12 @@
 //  Image(systemName:)获取系统的图标(资源)
 //  Image()获取自定义的图标(资源)
 //  Created by haijunyan on 2023/12/28.
-//
+//  SwiftUI(辅助(层))弹性布局
+//  body根主图(辅助)
+//  VStack(布局)垂直(辅助(层))
+//  HStack(布局)水平(辅助(层))
+//  ZStack(布局)Z堆叠(辅助(层))
+//  ScrollView
 
 import WidgetKit
 import SwiftUI
