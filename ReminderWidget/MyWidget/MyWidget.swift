@@ -1,3 +1,5 @@
+//  IncludeConfigurationIntent 添加(动态)配置意图
+//  .intentdefinition 意图定义文件
 //  参考文档https://zhuanlan.zhihu.com/p/661980240
 //  MyWidget.swift
 //  MyWidget
@@ -10,6 +12,10 @@
 //  HStack(布局)水平(辅助(层))
 //  ZStack(布局)Z堆叠(辅助(层))
 //  ScrollView
+//  supportedFamilies已支持尺寸家族：
+//  3大基础尺寸：.systemSmall小, .systemMedium中, .systemLarge大
+//  iOS15：.systemExtraLarge超大(iPad使用)
+//  iOS16：.accessoryCircular附属圆形 、 .accessoryRectangular附属圆角矩形 、.accessoryInline附属内置线 (手表/锁屏)
 
 import WidgetKit
 import SwiftUI
@@ -146,8 +152,26 @@ extension SimpleEntry.Time {
 //层(器皿)渲染区
 //UI对应的条目entry绘制
 struct MyWidgetEntryView : View {
+    //环境变量获取当前组件的类型
+    @Environment(\.widgetFamily) var family: WidgetFamily
+
     var entry: Provider.Entry
 
+    //声明计算属性(懒(载))
+    var familyString: String {
+        switch family {
+        case .systemSmall:
+            return "小组件"
+        case .systemMedium:
+            return "中等组件"
+        case .systemLarge:
+            return "大号组件"
+        case .systemExtraLarge:
+            return "超大组件"
+        @unknown default:
+            return "其他类型小组件"
+        }
+    }
     //渲染体body(内嵌具体视觉渲染)
 //    var body: some View {
 //        Text(entry.date, style: .time)
@@ -166,12 +190,16 @@ struct MyWidgetEntryView : View {
                     Text(entry.time.text)
                 }
                 .font(.subheadline)
+                Text("这是:\(familyString)")
             }
         }
 }
 
 @main
 //小组件的配置
+//  “动态配置”菜单：编辑小组件、编辑主屏幕、移除小组件
+//动态配置页>动态配置项
+//ConfigurationIntent配置意图
 struct MyWidget: Widget {
     let kind: String = "MyWidget"//小组件唯一标识
 
@@ -179,8 +207,8 @@ struct MyWidget: Widget {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             MyWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("小组件的名称")
-        .description("这是小组件的描述.")
+        .configurationDisplayName("意图显示")
+        .description("组件的意图描述")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
