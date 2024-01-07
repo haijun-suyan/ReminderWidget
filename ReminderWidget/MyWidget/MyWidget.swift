@@ -192,13 +192,13 @@ struct MyWidgetEntryView : View {
                 Text("现在是:")
                 Text(entry.time.text)
             }
-                .font(.subheadline)
+            .font(.subheadline)
             Text("这是:\(familyString)")
             Text("姓名：\(configuration.name ?? "无")")
             Text("年龄：\(configuration.age ?? 0)")
             Text("性别：\(getGender())")
-            }
         }
+    }
 
     func getGender() -> String {
         switch entry.configuration.gender {
