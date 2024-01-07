@@ -15,6 +15,12 @@ struct ReminderWidgetApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-        }
+                .onOpenURL { url in
+                    print("\(url)")
+                }
+        }.commands {
+            CommandGroup(replacing: .newItem, addition: { })
+         }
+        .handlesExternalEvents(matching: Set(arrayLiteral: "{same path of URL?}"))
     }
 }

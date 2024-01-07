@@ -17,6 +17,7 @@
 //  3大基础尺寸：.systemSmall小, .systemMedium中, .systemLarge大
 //  iOS15：.systemExtraLarge超大(iPad使用)
 //  iOS16：.accessoryCircular附属圆形 、 .accessoryRectangular附属圆角矩形 、.accessoryInline附属内置线 (手表/锁屏)
+//  目标target程序对象配置访问路由scheme
 
 import WidgetKit
 import SwiftUI
@@ -198,6 +199,7 @@ struct MyWidgetEntryView : View {
             Text("年龄：\(configuration.age ?? 0)")
             Text("性别：\(getGender())")
         }
+        .widgetURL(URL(string: "weixin://scanqrcode"))
     }
 
     func getGender() -> String {
