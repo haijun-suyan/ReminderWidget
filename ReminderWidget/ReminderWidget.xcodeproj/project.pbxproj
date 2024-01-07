@@ -83,6 +83,7 @@
 		F3ABD10B2B32E69B0029EC0B /* ReminderWidgetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReminderWidgetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3ABD10F2B32E69B0029EC0B /* ReminderWidgetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderWidgetUITests.swift; sourceTree = "<group>"; };
 		F3ABD1112B32E69C0029EC0B /* ReminderWidgetUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderWidgetUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		F3BD5B952B49603400E69464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +166,7 @@
 		F3ABD0EE2B32E6990029EC0B /* ReminderWidget */ = {
 			isa = PBXGroup;
 			children = (
+				F3BD5B952B49603400E69464 /* Info.plist */,
 				F3ABD0EF2B32E6990029EC0B /* ReminderWidgetApp.swift */,
 				F3ABD0F12B32E6990029EC0B /* ContentView.swift */,
 				F3ABD0F82B32E69B0029EC0B /* Persistence.swift */,
@@ -598,6 +600,7 @@
 				DEVELOPMENT_TEAM = NCL9H5966U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ReminderWidget/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -628,6 +631,7 @@
 				DEVELOPMENT_TEAM = NCL9H5966U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ReminderWidget/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -1,5 +1,6 @@
-//  IncludeConfigurationIntent 添加(动态)配置意图
+//  IncludeConfigurationIntent 添加(动态)配置意图(备忘作用/)
 //  .intentdefinition 意图定义文件
+//  IntentTimelineProvider意图同步时间线供应方
 //  参考文档https://zhuanlan.zhihu.com/p/661980240
 //  MyWidget.swift
 //  MyWidget
@@ -108,6 +109,7 @@ struct Provider: IntentTimelineProvider {
 struct SimpleEntry: TimelineEntry {
     //时间点
     let date: Date
+    //configuration配置文件下的参数属性可获取用户动态配置的数据
     let configuration: ConfigurationIntent
 
     enum Time {
@@ -179,20 +181,35 @@ struct MyWidgetEntryView : View {
 ////        Text("具体视觉渲染")
 //    }
     var body: some View {
-            VStack(spacing: 10) {
-                Image("custom_fish").imageScale(.small)
-                Image(systemName: entry.time.icon)
+        let configuration = entry.configuration
+        VStack(alignment: .center,spacing: 10) {
+            Image("custom_fish").imageScale(.small)
+            Image(systemName: entry.time.icon)
                     .imageScale(.large)
                     .foregroundColor(.red)
                     .font(Font.largeTitle.weight(.medium))
-                HStack {
-                    Text("现在是:")
-                    Text(entry.time.text)
-                }
+            HStack {
+                Text("现在是:")
+                Text(entry.time.text)
+            }
                 .font(.subheadline)
-                Text("这是:\(familyString)")
+            Text("这是:\(familyString)")
+            Text("姓名：\(configuration.name ?? "无")")
+            Text("年龄：\(configuration.age ?? 0)")
+            Text("性别：\(getGender())")
             }
         }
+
+    func getGender() -> String {
+        switch entry.configuration.gender {
+                case .man:
+                    return "男"
+                case .woman:
+                    return "女"
+                case .unknown:
+                    return "未知"
+                }
+    }
 }
 
 @main
