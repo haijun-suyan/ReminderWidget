@@ -6,7 +6,9 @@
 //  .onOpenURL 回调状态
 //  openURL 动作
 //  SwiftUI框架(UI渲染) .onOpenURL
-
+//  UIKit框架(UI渲染)
+//  oc/swift生命周期的管理 上层自主权很高hook钩子多
+//  SwiftUI生命周期的管理上层自主权很低hook钩子少
 import SwiftUI
 
 @main
