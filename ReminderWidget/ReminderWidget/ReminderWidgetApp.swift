@@ -5,6 +5,7 @@
 //  Created by haijunyan on 2023/12/20.
 //  .onOpenURL 回调状态
 //  openURL 动作
+//  SwiftUI框架(UI渲染) .onOpenURL
 
 import SwiftUI
 
