@@ -9,6 +9,8 @@
 //  UIKit框架(UI渲染)
 //  oc/swift生命周期的管理 上层自主权很高hook钩子多
 //  SwiftUI生命周期的管理上层自主权很低hook钩子少
+//  SceneDelegate管理生命周期scene(_:, openURLContexts:) URL场景分析
+//  AppDelegate管理生命周期application(_:open:options:)URL场景分析
 import SwiftUI
 
 @main
