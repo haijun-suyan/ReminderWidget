@@ -191,9 +191,12 @@ struct MyWidgetEntryView : View {
                     .imageScale(.large)
                     .foregroundColor(.red)
                     .font(Font.largeTitle.weight(.medium))
-            HStack {
+            HStack(spacing: 10) {
                 Text("现在是:")
                 Text(entry.time.text)
+                Link(destination: URL(string: "https://www.baidu.com")!, label: {
+                    Text("百度").foregroundColor(.blue)
+                })
             }
             .font(.subheadline)
 //            Text("这是:\(familyString)")
