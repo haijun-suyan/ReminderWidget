@@ -18,6 +18,8 @@
 //  iOS15：.systemExtraLarge超大(iPad使用)
 //  iOS16：.accessoryCircular附属圆形 、 .accessoryRectangular附属圆角矩形 、.accessoryInline附属内置线 (手表/锁屏)
 //  目标target程序对象配置访问路由scheme
+//  程序可配置路由URL方案scheme//核心在于路由路径“test1://”
+//  域名+参数属性：(枚举)场景(配置)分析
 
 import WidgetKit
 import SwiftUI
@@ -194,12 +196,13 @@ struct MyWidgetEntryView : View {
                 Text(entry.time.text)
             }
             .font(.subheadline)
-            Text("这是:\(familyString)")
-            Text("姓名：\(configuration.name ?? "无")")
-            Text("年龄：\(configuration.age ?? 0)")
-            Text("性别：\(getGender())")
+//            Text("这是:\(familyString)")
+//            Text("姓名：\(configuration.name ?? "无")")
+//            Text("年龄：\(configuration.age ?? 0)")
+//            Text("性别：\(getGender())")
         }
-        .widgetURL(URL(string: "weixin://scanqrcode"))
+        .widgetURL(URL(string: "test1://"))
+//        .widgetURL(URL(string: "iosnews://iosNews.com/p1=1&p2=2"))
     }
 
     func getGender() -> String {

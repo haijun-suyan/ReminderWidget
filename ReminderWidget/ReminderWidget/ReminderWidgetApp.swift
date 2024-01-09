@@ -3,7 +3,8 @@
 //  ReminderWidget
 //
 //  Created by haijunyan on 2023/12/20.
-//
+//  .onOpenURL 回调状态
+//  openURL 动作
 
 import SwiftUI
 
@@ -15,9 +16,14 @@ struct ReminderWidgetApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .onOpenURL { url in
-                    print("\(url)")
-                }
+                .onOpenURL(perform: { url in
+                    print("Inside onOpenURL..\(url)")
+                 })
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
+                    guard userActivity.webpageURL != nil else { return }
+                     print("Inside onContinueUserActivity....")
+                 }
+
         }.commands {
             CommandGroup(replacing: .newItem, addition: { })
          }
